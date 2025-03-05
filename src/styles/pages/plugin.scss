@@ -1,0 +1,94 @@
+@use '../utils/functions' as f;
+
+#plugin {
+  .plugin-header {
+    .plugin-icon {
+      border: 1px solid var(--border-color);
+    }
+
+    .plugin-info {
+      .plugin-meta > .meta-item {
+        background: var(--primary-color);
+        border: 1px solid var(--border-color);
+        padding: 0 0.5rem;
+        border-radius: 0.5rem;
+      }
+    }
+  }
+}
+
+/****************************************
+ *** Plugin Reviews
+****************************************/
+
+body:has(.reviews-container) .mask {
+  background: black;
+  opacity: 0.25;
+}
+
+.reviews-container {
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--primary-color) !important;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+
+  .write-review {
+    display: flex;
+    align-items: center;
+    width: 80% !important;
+    height: 2rem;
+    background-color: f.trans-color(var(--secondary-color), 40%);
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
+
+    a {
+      display: flex;
+      align-items: center;
+      color: var(--text-secondary-color);
+
+      .icon {
+        display: none;
+      }
+
+      .title {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .reviews-body {
+    width: 100% !important;
+    margin-top: 1rem;
+    border-top: 1px solid var(--border-color);
+
+    .review {
+      max-width: 100% !important;
+
+      .review-author {
+        .user-profile {
+          background-color: f.trans-color(var(--secondary-color), 60%);
+        }
+
+        .user-name {
+          font-weight: 600;
+        }
+      }
+
+      .author-reply {
+        max-width: 100% !important;
+        margin-top: 0.5rem;
+        border-radius: 0.5rem !important;
+        background-color: f.trans-color(var(--secondary-color), 60%);
+
+        &::before {
+          font-weight: 600 !important;
+        }
+      }
+    }
+  }
+}

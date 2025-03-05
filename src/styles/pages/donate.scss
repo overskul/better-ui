@@ -1,0 +1,35 @@
+#donate-page .product {
+  background: var(--secondary-color);
+  border: 1px solid var(--border-color);
+
+  .product-info {
+    border-top: 1px solid var(--border-color);
+  }
+
+  .button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    padding-top: 0;
+    box-sizing: border-box !important;
+
+    & > button {
+      width: 100% !important;
+      height: 2rem !important;
+    }
+  }
+}
+
+/* 
+<div class="product">
+  <img src="https://acode.app/res/2.jpeg" alt="">
+  <div class="product-info">
+    <p>Always give without remembering and always receive without forgetting. - 
+Brian Tracy</p>
+    <div class="button-container primary">
+      <button action="donate" value="{&quot;productId&quot;:&quot;basic&quot;,&quot;type&quot;:&quot;inapp&quot;,&quot;title&quot;:&quot;Basic (Acode - code editor | FOSS)&quot;,&quot;name&quot;:&quot;Basic&quot;,&quot;iconUrl&quot;:&quot;https:\/\/lh3.googleusercontent.com\/tBmfTr_TyGtv24MzhVzW1ajjppSw9KjzunMRBFdxHZ10AmvlEokombjZabATWBuH3lk&quot;,&quot;description&quot;:&quot;Always give without remembering and always receive without forgetting. - \nBrian Tracy&quot;,&quot;price&quot;:&quot;$0.49&quot;,&quot;price_amount_micros&quot;:490000,&quot;price_currency_code&quot;:&quot;USD&quot;,&quot;skuDetailsToken&quot;:&quot;AEuhp4Jp67YdVwHif2qrUNHG8JNUZvgCBDvbcgqKWTN8rJcysoLwzmTkCXI32VCDOd3z-lJHw-aTr2-Z1bfNzalw702Yr7IUwRi7dPPhah0PZGVfNpZV&quot;}">Donate $0.49</button>
+    </div>
+  </div>
+</div>
+*/

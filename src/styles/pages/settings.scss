@@ -1,0 +1,113 @@
+.main:not([id]),
+#plugins,
+#theme-setting,
+#custom-theme {
+  .options {
+    border: 1px solid var(--border-color) !important;
+  }
+
+  &.list,
+  .list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    max-width: 100%;
+    gap: 0.5rem;
+    box-sizing: border-box;
+    border: 0;
+
+    .list-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      font-size: 0.8rem;
+      max-height: 3rem !important;
+      min-height: auto !important;
+      width: 100% !important;
+      gap: 0.5rem !important;
+      padding: 1rem;
+      margin: 0 !important;
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem !important;
+      background: var(--primary-color) !important;
+      box-shadow: 0 0 0 !important;
+
+      &:hover,
+      &:active {
+        border-color: var(--active-color);
+      }
+
+      & > .icon {
+        background-size: 100% !important;
+        border-radius: 0.5rem !important;
+        height: 2rem;
+        width: 2rem;
+        background-position: center;
+
+        &.no-icon {
+          display: none;
+
+          &[style*='background-color'] {
+            display: flex;
+          }
+        }
+      }
+
+      & > .container {
+        width: 100% !important;
+        max-height: 2rem !important;
+
+        .value {
+          display: flex;
+          gap: 0.5rem;
+          max-height: 1rem !important;
+
+          .group {
+            margin: 0 !important;
+
+            .icon {
+              height: 100% !important;
+              width: auto !important;
+            }
+          }
+        }
+      }
+
+      & .plugin-meta {
+        opacity: 0.5;
+      }
+    }
+
+    .note {
+      background: var(--primary-color);
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+
+      .note-title {
+        justify-content: start;
+      }
+    }
+  }
+}
+
+/****************************************
+ *** Search Bar
+****************************************/
+
+#search-bar {
+  display: flex;
+  align-items: center;
+  width: 100% !important;
+  height: 3.5rem !important;
+  border-bottom: 1px solid var(--border-color);
+
+  .icon {
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    margin-right: 1rem;
+    height: 2rem !important;
+    width: 2rem !important;
+    padding: 0 !important;
+  }
+}

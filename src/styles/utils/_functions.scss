@@ -1,0 +1,12 @@
+@function trans-color($color, $trans) {
+  @return color-mix(in srgb, $color $trans, transparent);
+}
+
+@function get-opposite($cur, $fir, $sec) {
+  @if $cur == $fir {
+    @return $fir;
+  } @else if $cur == $sec {
+    @return $sec;
+  }
+  @return $cur;
+}

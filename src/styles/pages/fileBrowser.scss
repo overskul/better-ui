@@ -1,0 +1,65 @@
+@use '../utils/mixin' as m;
+
+#file-browser {
+  overflow: hidden !important;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .navigation {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--secondary-color) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    padding: 0 0.5rem;
+
+    .nav {
+      margin: 0 !important;
+
+      &::before {
+        opacity: 0.5;
+      }
+
+      &::after {
+        padding: 0 0.5rem;
+        background: var(--primary-color) !important;
+      }
+
+      &:first-child::before {
+        display: none !important;
+      }
+
+      &:last-child::after {
+        @include m.active-state;
+      }
+    }
+  }
+
+  .info {
+    background: var(--primary-color);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .selection-header {
+    width: 100% !important;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .floating {
+    border-radius: 1rem;
+    box-shadow: 0 0 0;
+    border-color: var(--border-color);
+  }
+
+  .list,
+  .scroll {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}

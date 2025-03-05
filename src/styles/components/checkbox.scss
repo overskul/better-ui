@@ -1,0 +1,27 @@
+.input-checkbox {
+  .box {
+    opacity: 1;
+    border: 0 !important;
+    background-color: var(--secondary-color);
+
+    &::after {
+      display: flex !important;
+      height: 100% !important;
+      width: 100% !important;
+      border-radius: 4px !important;
+      border-color: var(--border-color) !important;
+    }
+  }
+
+  input:checked {
+    & + .box::after {
+      background-color: var(--active-color);
+    }
+  }
+
+  input:not(:checked) {
+    & + .box::after {
+      background-color: var(--secondary-color);
+    }
+  }
+}

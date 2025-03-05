@@ -1,0 +1,21 @@
+@use '../utils/functions' as f;
+
+.context-menu {
+  border-radius: var(--popup-border-radius) !important;
+  border: 1px solid var(--border-color) !important;
+
+  li {
+    .text {
+      color: var(--popup-text-color) !important;
+    }
+
+    .icon {
+      color: f.trans-color(var(--popup-text-color), 60%) !important;
+    }
+
+    &:hover,
+    &:active {
+      background-color: var(--popup-background-secondary-color) !important;
+    }
+  }
+}

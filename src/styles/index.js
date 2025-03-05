@@ -1,23 +1,17 @@
-import sidebarStyle from "./sidebar.scss";
-import settingsStyle from "./settings.scss";
-import checkboxStyle from "./checkbox.scss";
-import dialogStyle from "./dialog.scss";
-import menuStyle from "./menu.scss";
-import pageStyle from "./page.scss";
-import pallettesStyle from "./pallettes.scss";
-import hintsStyle from "./hints.scss";
-import pluginStyle from "./plugin.scss";
-import quickToolsStyle from "./quicktools.scss";
+// pages
+export { default as sidebar } from './pages/sidebar.scss';
+export { default as page } from './pages/page.scss';
+export { default as settings } from './pages/settings.scss';
+export { default as changelog } from './pages/changelog.scss';
+export { default as plugin } from './pages/plugin.scss';
+export { default as donate } from './pages/donate.scss';
+export { default as about } from './pages/about.scss';
+export { default as fileBrowser } from './pages/fileBrowser.scss';
 
-export default {
-  sidebar: sidebarStyle,
-  settings: settingsStyle,
-  checkbox: checkboxStyle,
-  dialog: dialogStyle,
-  menu: menuStyle,
-  page: pageStyle,
-  pallettes: pallettesStyle,
-  hints: hintsStyle,
-  plugin: pluginStyle,
-  quicktools: quickToolsStyle
-};
+// components
+export { default as checkbox } from './components/checkbox.scss';
+export { default as dialog } from './components/dialog.scss';
+export { default as menu } from './components/menu.scss';
+export { default as pallettes } from './components/pallettes.scss';
+export { default as hints } from './components/hints.scss';
+export { default as quicktools } from './components/quicktools.scss';

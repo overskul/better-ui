@@ -1,0 +1,25 @@
+#about-page {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 1px !important;
+  column-gap: 1px !important;
+  gap: 0 !important;
+
+  .logo {
+    border: 1px solid var(--border-color);
+    margin: 0 !important;
+  }
+
+  .version-info {
+    margin: 0 !important;
+  }
+
+  .info-section {
+    grid-column: 1 / -1;
+    margin: 0 !important;
+  }
+
+  .social-links {
+    grid-column: 1 / -1;
+  }
+}
