@@ -12,12 +12,13 @@ if (!fs.existsSync(readmeDotMd)) {
 }
 
 // create zip file of dist folder
-
 const zip = new jszip();
 
 zip.file('icon.png', fs.readFileSync(iconFile));
 zip.file('plugin.json', fs.readFileSync(pluginJSON));
 zip.file('readme.md', fs.readFileSync(readmeDotMd));
+zip.file('changelog.md', fs.readFileSync(path.join(__dirname, '../changelog.md')));
+zip.file('LICENSE', fs.readFileSync(path.join(__dirname, '../LICENSE')));
 
 loadFile('', distFolder);
 
@@ -31,17 +32,12 @@ zip
 function loadFile(root, folder) {
   const distFiles = fs.readdirSync(folder);
   distFiles.forEach((file) => {
-
     const stat = fs.statSync(path.join(folder, file));
 
     if (stat.isDirectory()) {
       zip.folder(file);
       loadFile(path.join(root, file), path.join(folder, file));
       return;
-    }
-
-    if (!/LICENSE.txt/.test(file)) {
-      zip.file(path.join(root, file), fs.readFileSync(path.join(folder, file)));
     }
   });
 }
