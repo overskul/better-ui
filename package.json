@@ -2,7 +2,6 @@
   "name": "better-ui",
   "version": "1.5.0",
   "description": "Make Acode look better with the Better UI plugin",
-  "main": "dist/main.js",
   "scripts": {
     "dev": "node .devServer/start-dev",
     "build": "webpack && node .devServer/pack-zip.js",

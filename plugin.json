@@ -1,7 +1,7 @@
 {
   "id": "x.better.ui",
   "name": "Better UI",
-  "main": "dist/main.js",
+  "main": "main.js",
   "version": "1.5.0",
   "readme": "readme.md",
   "icon": "icon.png",
