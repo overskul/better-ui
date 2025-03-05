@@ -1,81 +1,112 @@
-<div align="center">
-  <h1>Better UI</h1>
-  <h4>Make Acode look better with the Better UI plugin. This tool lets you change how Acode looks and works.</h4>
-</div>
+# BetterUI Plugin for Acode
 
-## What it does
+Enhance your Acode editor experience with customizable UI styles.
 
-- **Changes the look**: Makes Acode look nicer.
-- **Pick what you want**: Turn on or off changes for different parts of Acode.
-- **Add your own style**: You can add your own CSS to make Acode look how you want.
+## Features
 
-## How to use it
+- **Multiple UI Styles**: Choose from predefined UI enhancements
+- **Custom CSS Support**: Add your own CSS rules with live reload
+- **Toggleable Features**: Enable/disable specific UI components
 
-After you add it:
+## Installation
 
-1. Go to Acode settings.
-2. Find the "Plugins" part.
-3. Click on "Better UI" to change its settings.
+1. Open Acode editor
+2. Navigate to Sidebar → Plugins
+3. Search for "BetterUI"
+4. Click Install
 
-In the settings, you can:
-- Turn different changes on or off
-- Add your own CSS
-- Change settings for different parts of Acode
+## Usage
 
-## Help make it better
+### Access Settings
+1. Go to Settings → Plugins
+2. Find BetterUI in the list
+3. Click the settings icon
 
-We'd love your help to make Better UI even better! If you want to help:
+### Toggle UI Components
+- Check/uncheck features in the settings list
+- Changes apply immediately
 
-1. Clone our repo from [github](https://github.com/NezitX/better-ui).
-2. Make the changes you want.
-3. Open a new pull request in [github](https://github.com/NezitX/better-ui).
+### Custom CSS
+1. Click "Add Custom CSS" in plugin settings
+2. Edit the `BetterUI.custom.css` file
+3. Save changes (auto-reloads styles)
 
-Please make sure your changes work well and fit with how the rest of the code looks.
+## Development
+Contributions are welcome. Please open issues/pull requests on [GitHub](https://github.com/overskul/better-ui) for:
+- New UI component suggestions
+- CSS conflict reports
+- Feature requests
 
-## License
+## Support
+Found this plugin useful? Consider:
+- Leaving a ⭐ rating in the [plugin page](https://acode.app/plugin/x.better.ui) and [GitHub](https://github.com/overskul/better-ui)
+- Reporting issues on [GitHub](https://github.com/overskul/better-ui)
+- Contributing CSS improvements
 
-This project uses the MIT [License](./license).
+---
 
-## Need help?
+This plugin is under [MIT License](./LICENSE).
 
-If something's not working or you have questions, let us know on our [GitHub page](https://github.com/NezitX/better-ui).
+---
 
-## API `(^1.3.0)`
+## Plugin API Reference `+(v1.5.0)`
 
-You can use **Better UI** now which provide some useful tools for you.
-start by call it:
-```js
-const BetterUI = acode.require("@better/ui");
+```javascript
+const BetterUI = acode.require('@better/ui');
 ```
 
-> Constants
-
-```js
+### Constants
+```javascript
 /**
- * Returns the path to the UI folder.
- * @type {string}
+ * Available UI component types
+ * @constant {string[]}
+ * @example
+ * const { UiTypes } = acode.require('@better/ui');
+ */
+BetterUI.UiTypes
+
+/**
+ * Base directory for UI customization files
+ * @constant {string}
  */
 BetterUI.UiPath
 
 /**
- * Returns the path to the custom CSS file.
- * @type {string}
+ * Path to custom CSS file
+ * @constant {string}
  */
 BetterUI.CustomCssPath
-
-/**
- * Provides an array of available UI types in the plugin.
- * @type {string[]}
- */
-BetterUI.UiTypes
 ```
 
-> Methods
-
-```js
+### Methods
+```javascript
 /**
- * Reset the ui for active types and custom css file.
- * @return {Promise<void>}
+ * Get currently active UI types
+ * @returns {string[]} Array of active UI types
  */
-await BetterUI.resetUi();
+BetterUI.getActiveTypes
+
+/**
+ * Reset UI styles for specified types
+ * @async
+ * @param {...string} types - UI component types to reset
+ * @returns {Promise<void>}
+ * @example
+ * await BetterUI.resetUi('sidebar', 'settings');
+ */
+await BetterUI.resetUi
+
+/**
+ * Load styles for specified UI types
+ * @async
+ * @param {...string} types - UI component types to style
+ * @returns {Promise<void>}
+ */
+await BetterUI.loadStyle
+
+/**
+ * Remove styles for specified UI types
+ * @param {...string} types - UI component types to remove
+ */
+await BetterUI.removeStyle
 ```
