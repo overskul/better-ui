@@ -1,23 +1,23 @@
 {
   "name": "better-ui",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Make Acode look better with the Better UI plugin",
   "main": "dist/main.js",
   "scripts": {
-    "start-dev": "node .devServer/start-dev",
+    "dev": "node .devServer/start-dev",
     "build": "webpack && node .devServer/pack-zip.js",
-    "build-release": "webpack --mode production"
+    "release": "webpack --mode production"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NezitX/better-ui.git"
+    "url": "git+https://github.com/overskul/better-ui.git"
   },
-  "author": "NezitX",
+  "author": "overskul",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/NezitX/better-ui/issues"
+    "url": "https://github.com/overskul/better-ui/issues"
   },
-  "homepage": "https://github.com/NezitX/better-ui#readme",
+  "homepage": "https://github.com/overskul/better-ui#readme",
   "dependencies": {
     "@babel/cli": "^7.19.3",
     "@babel/core": "^7.20.5",

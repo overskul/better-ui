@@ -2,16 +2,16 @@
   "id": "x.better.ui",
   "name": "Better UI",
   "main": "dist/main.js",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "readme": "readme.md",
   "icon": "icon.png",
+  "license": "LICENSE",
+  "changelog": "changelog.md",
   "files": [],
   "price": 0,
-  "minVersionCode": 290,
+  "minVersionCode": 956,
   "author": {
-    "name": "NezitX",
-    "email": "",
-    "url": "https://github.com/NezitX",
-    "github": "NezitX"
+    "name": "overskul",
+    "github": "overskul"
   }
 }
