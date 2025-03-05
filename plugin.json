@@ -5,10 +5,15 @@
   "version": "1.5.0",
   "readme": "readme.md",
   "icon": "icon.png",
-  "license": "LICENSE",
+  "license": "MIT",
   "changelog": "changelog.md",
   "files": [],
   "price": 0,
+  "Keywords": [
+    "Better",
+    "UI",
+    "Customization"
+  ],
   "minVersionCode": 956,
   "author": {
     "name": "overskul",
