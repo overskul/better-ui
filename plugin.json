@@ -7,7 +7,7 @@
   "icon": "icon.png",
   "license": "MIT",
   "changelog": "changelog.md",
-  "files": [],
+  "files": ["./LICENSE"],
   "price": 0,
   "Keywords": [
     "Better",
