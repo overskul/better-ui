@@ -1,0 +1,106 @@
+// Border Sizes
+$border-xs: 1px;
+$border-sm: 2px;
+$border-md: 3px;
+$border-lg: 4px;
+$border-xl: 6px;
+
+// Border Radius
+$radius-sm: 0.125rem;   // 2px
+$radius-md: 0.25rem;    // 4px
+$radius-lg: 0.5rem;     // 8px
+$radius-xl: 0.75rem;    // 12px
+$radius-2xl: 1rem;      // 16px
+$radius-3xl: 1.5rem;    // 24px
+$radius-full: 9999px;   // Fully rounded
+
+// Unit Sizes
+$u-2xs: 0.25rem;   // 4px
+$u-xs: 0.5rem;     // 8px
+$u-sm: 0.75rem;    // 12px
+$u-md: 1rem;       // 16px
+$u-lg: 1.5rem;     // 24px
+$u-xl: 2rem;       // 32px
+$u-2xl: 3rem;      // 48px
+
+// Text Sizes
+$text-xs: 0.75rem;       // 12px
+$text-sm: 0.875rem;      // 14px
+$text-base: 1rem;        // 16px
+$text-md: 1.125rem;      // 18px
+$text-lg: 1.25rem;       // 20px
+$text-xl: 1.5rem;        // 24px
+$text-2xl: 1.875rem;     // 30px
+$text-3xl: 2.25rem;      // 36px
+$text-4xl: 3rem;         // 48px
+$text-5xl: 3.75rem;      // 60px
+
+/**
+ * LIGHT MODE PALETTE
+ */
+:root {
+  /* Background Colors */
+  --bui-bg: #f8f9fa;
+  --bui-bg-muted: #f1f3f5;
+  --bui-bg-border: 0;
+  --bui-bg-foreground: #212529;
+
+  --bui-bg-secondary: #e9ecef;
+  --bui-bg-secondary-muted: 0;
+  --bui-bg-secondary-border: 0;
+  --bui-bg-secondary-foreground: 0;
+
+  /* Primary Colors */
+  --bui-primary: #3b82f6;
+  --bui-primary-muted: 0;
+  --bui-primary-border: 0;
+  --bui-primary-foreground: #ffffff;
+
+  /* Secondary Colors */
+  --bui-secondary: #64748b;
+  --bui-secondary-muted: 0;
+  --bui-secondary-border: 0;
+  --bui-secondary-foreground: #ffffff;
+
+  /* Other Colors */
+  --bui-accent: #10b981;
+  --bui-destructive: #ef4444;
+}
+
+/**
+ * DARK MODE PALETTE
+ */
+body[theme-type="dark"] {
+  /* Background Colors */
+  --bui-bg: #18181b;
+  --bui-bg-muted: #27272a;
+  --bui-bg-border: 0;
+  --bui-bg-foreground: #f8fafc;
+
+  --bui-bg-secondary: #09090b;
+  --bui-bg-secondary-muted: 0;
+  --bui-bg-secondary-border: 0;
+  --bui-bg-secondary-foreground: 0;
+
+  /* Primary Colors */
+  --bui-primary: #60a5fa;
+  --bui-primary-muted: 0;
+  --bui-primary-border: 0;
+  --bui-primary-foreground: #f8fafc;
+
+  /* Secondary Colors */
+  --bui-secondary: #94a3b8;
+  --bui-secondary-muted: 0;
+  --bui-secondary-border: 0;
+  --bui-secondary-foreground: #f8fafc;
+
+  /* Other Colors */
+  --bui-accent: #34d399;
+  --bui-destructive: #f87171;
+}
+
+body {
+  background-color: var(--bui-bg);
+  color: var(--bui-bg-foreground);
+  font-size: $text-base;
+}
