@@ -1,26 +1,36 @@
-$navbar-height: 3.5rem;
+@use "../utils/variables" as *;
+
+$header-height: 3.5rem;
+$header-icon-size: 2rem;
 
 wc-page {
+  color: inherit !important;
+  background-color: inherit !important;
+  font-size: inherit !important;
+
   header {
     display: flex !important;
     align-items: center !important;
-    height: $navbar-height !important;
-    border-bottom: 1px solid var(--border-color);
+    height: $header-height !important;
+    color: inherit !important;
+    background-color: inherit !important;
+    border: 0 !important;
     box-shadow: 0 0 0 !important;
-    padding: 0.5rem 1rem !important;
-    gap: 1rem;
+    padding: $u-xs $u-md !important;
+    gap: $u-md;
 
     .icon {
-      border-radius: 0.5rem;
-      height: 2rem !important;
-      width: 2rem !important;
-      font-size: 1rem !important;
-      border: 1px solid var(--border-color);
+      height: $header-icon-size !important;
+      width: $header-icon-size !important;
+      border: $border-xs solid var(--bui-bg-muted);
+      border-radius: $radius-lg;
     }
 
     .text {
+      margin: 0 !important;
+
       &.sub-text {
-        font-size: 0.8rem !important;
+        font-size: $text-sm !important;
       }
     }
   }
