@@ -1,4 +1,9 @@
-# BetterUI Plugin for Acode
+# BetterUI
+
+![GitHub Repo Shield](https://img.shields.io/github/repo-size/overskul/better-ui?color=yellow&label=Size&style=for-the-badge)
+![License](https://img.shields.io/github/license/overskul/better-ui?color=yellow&style=for-the-badge)
+![GitHub Stars](https://img.shields.io/github/stars/overskul/better-ui?color=yellow&style=for-the-badge)
+![Version](https://img.shields.io/github/v/release/overskul/better-ui?color=yellow&style=for-the-badge)
 
 Enhance your Acode editor experience with customizable UI styles.
 
