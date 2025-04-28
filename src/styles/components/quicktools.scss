@@ -37,17 +37,23 @@
 
 .open-file-list {
   background-color: var(--secondary-color);
-  border-bottom: 1px solid var(--border-color);
+  border: 1px solid var(--border-color);
+  border-top: 0;
   box-shadow: 0 0 0 !important;
 
   .tile {
+    opacity: 0.8;
     background-color: color-mix(in srgb, var(--primary-color) 40%, transparent);
     border: 0 !important;
-    border: 1px solid transparent !important;
+    border-right: 1px solid var(--border-color) !important;
 
     &.active {
-      border: 1px solid var(--border-color) !important;
+      opacity: 1;
       background: var(--primary-color) !important;
+    }
+
+    .file {
+      padding: 0 !important;
     }
   }
 }
