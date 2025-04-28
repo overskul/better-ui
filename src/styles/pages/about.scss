@@ -17,9 +17,27 @@
   .info-section {
     grid-column: 1 / -1;
     margin: 0 !important;
+
+    .info-item {
+      border: 1px solid var(--border-color) !important;
+
+      &:first-child {
+        border-top-left-radius: 1rem !important;
+        border-top-right-radius: 1rem !important;
+      }
+
+      &:last-child {
+        border-bottom-left-radius: 1rem !important;
+        border-bottom-right-radius: 1rem !important;
+      }
+    }
   }
 
   .social-links {
     grid-column: 1 / -1;
+
+    .social-link {
+      border: 1px solid var(--border-color);
+    }
   }
 }
