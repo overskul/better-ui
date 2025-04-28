@@ -1,24 +1,20 @@
-@use "../utils/variables" as *;
-
 #quicktools-toggler {
-  color: var(--bui-bg-foreground);
-  background-color: var(--bui-bg);
-  border-radius: $radius-2xl;
-  border-color: var(--bui-bg-muted);
+  border-radius: 1rem;
   box-shadow: 0 0 0;
+  border-color: var(--border-color);
 }
 
 #quick-tools {
-  border: $border-sm solid var(--bui-bg-muted);
+  border: 0.1rem solid var(--border-color);
   border-bottom: 0 !important;
-  border-top-left-radius: $radius-2xl !important;
-  border-top-right-radius: $radius-2xl !important;
+  border-top-left-radius: 1rem !important;
+  border-top-right-radius: 1rem !important;
   box-shadow: 0 0 0;
 
   #row1,
   #row1 .section:nth-child(1) {
-    border-top-left-radius: $radius-2xl !important;
-    border-top-right-radius: $radius-2xl !important;
+    border-top-left-radius: 1rem !important;
+    border-top-right-radius: 1rem !important;
   }
 }
 
@@ -35,26 +31,23 @@
   }
 
   .open-file-list {
-    border-top: $border-xs solid var(--bui-bg-muted);
+    border-top: 1px solid var(--border-color);
   }
 }
 
 .open-file-list {
-  background-color: var(--bui-bg-secondary);
-  border-bottom: $border-xs solid var(--bui-bg-muted);
+  background-color: var(--secondary-color);
+  border-bottom: 1px solid var(--border-color);
   box-shadow: 0 0 0 !important;
 
   .tile {
-    background-color: inherit !important;
+    background-color: color-mix(in srgb, var(--primary-color) 40%, transparent);
     border: 0 !important;
-    padding: 0 $u-2xs !important;
-
-    .file {
-      padding: 0 !important;
-    }
+    border: 1px solid transparent !important;
 
     &.active {
-      background: var(--bui-bg) !important;
+      border: 1px solid var(--border-color) !important;
+      background: var(--primary-color) !important;
     }
   }
 }
