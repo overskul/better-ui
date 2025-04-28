@@ -12,14 +12,13 @@ class BetterUi {
   static UI_PATH = `${window.DATA_STORAGE}/ui`;
   static CUSTOM_CSS_PATH = `${BetterUi.UI_PATH}/BetterUI.custom.css`;
 
-  #initialized = false;
-
   constructor() {
     this.$styles = new Map();
     this.$custom = null;
 
     if (!appSettings.value[plugin.id]) {
       appSettings.value[plugin.id] = {
+        __initialized: false,
         activeTypes: [...BetterUi.UI_TYPES]
       };
       appSettings.update(false);
@@ -35,15 +34,11 @@ class BetterUi {
       await this.#checkCustomCssFile();
       await this.loadStyle(...this.settings.activeTypes, "custom_css");
 
-      if (!this.#initialized) return;
+      if (this.settings.__initialized) return;
+      this.settings.__initialized = true;
+      appSettings.update(false);
 
-      const confirm = await Confirm(
-        "Note",
-        "Do Want to reload app ? (recommended)"
-      );
-      if (!confirm) return;
-      this.#initialized = true;
-      location.reload();
+      await requestReload();
     } catch (e) {
       console.error("BetterUI initialization failed:", e);
       acode.alert("Error", "Failed to initialize BetterUI plugin");
@@ -61,11 +56,7 @@ class BetterUi {
       delete appSettings.value[plugin.id];
       appSettings.update(false);
 
-      const confirm = await Confirm(
-        "Note",
-        "Do Want to reload app ? (recommended)"
-      );
-      if (confirm) location.reload();
+      await requestReload();
     } catch (e) {
       console.error("BetterUI destroy failed:", e);
     }
@@ -198,6 +189,15 @@ class BetterUi {
 
 function firstUpperCase(str) {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
+async function requestReload() {
+  const confirm = await Confirm(
+    "[BetterUI] NOTE",
+    "Do Want to reload app ? (recommended)"
+  );
+
+  if (confirm) location.reload();
 }
 
 if (window.acode) {
