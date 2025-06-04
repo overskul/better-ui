@@ -42,7 +42,6 @@ async function handleOnEvents(type, data) {
 
     if (API.UI_TYPES.includes(key)) {
       // load UI type
-      console.log(key, value)
       if (value) await API.loadUI(key);
       else await API.unloadUI(key);
     } else if (API.CUSTOM_CSS === key) {

@@ -85,7 +85,6 @@ class BetterUIPlugin {
           editorFile.on("save", async () => {
             await API.unloadCustomCSS();
             await API.loadCustomCSS();
-            console.log("saved");
           });
           actionStack.pop(actionStack.length);
           return;
