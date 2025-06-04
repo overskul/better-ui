@@ -26,10 +26,10 @@ class BetterUIPlugin {
       acode.define("@better/ui", API);
       acode.define("@better/ui/utils", utils);
 
-      Object.entries(API.config.sections).forEach(async ([key, value]) => {
-        if (value) await API.loadUI(key);
-      });
-      if (API.config.customCSS) await API.loadCustomCSS();
+      const promises = [];
+      Object.entries(API.config.sections).forEach(([key, value]) => (value ? promises.push(API.loadUI(key)) : null));
+      if (API.config.customCSS) promises.push(API.loadCustomCSS());
+      await Promise.all(promises);
 
       const isInitialized = localStorage.getItem("__$bui_isInitialized$__");
       if (isInitialized === "true") return;
@@ -45,10 +45,11 @@ class BetterUIPlugin {
   async destroy() {
     try {
       API.emit("destroy");
-      Object.entries(API.config.sections).forEach(async ([key, value]) => {
-        if (value) await API.unloadUI(key);
-      });
-      if (API.config.customCSS) await API.unloadCustomCSS();
+
+      const promises = [];
+      Object.entries(API.config.sections).forEach(([key, value]) => (value ? promises.push(API.unloadUI(key)) : null));
+      if (API.config.customCSS) promises.push(API.unloadCustomCSS());
+      await Promise.all(promises);
 
       localStorage.removeItem("__$bui_isInitialized$__");
 
