@@ -15,7 +15,7 @@ export default function (data) {
       timeout = setTimeout(async () => {
         await API.updateConfig(target);
         timeout = null;
-      }, 200);
+      }, 500);
 
       return true;
     },
@@ -28,7 +28,7 @@ export default function (data) {
       timeout = setTimeout(async () => {
         await API.updateConfig(target);
         timeout = null;
-      }, 200);
+      }, 500);
 
       return true;
     }
