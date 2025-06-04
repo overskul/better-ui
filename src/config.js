@@ -36,7 +36,7 @@ export default function (data) {
 }
 
 export function defaultConfig() {
-  const sectionsList = API.UI_TYPES.reduce((acc, cur) => ((acc[cur] = false), acc), {});
+  const sectionsList = API.UI_TYPES.reduce((acc, cur) => ((acc[cur] = true), acc), {});
 
   return {
     customCSS: true,
