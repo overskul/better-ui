@@ -14,7 +14,7 @@ export async function createSettingsPage() {
   const oldHide = $settings.hide.bind($settings);
   $settings.hide = () => {
     oldHide();
-    setTimeout(() => $style.remove(), 200);
+    setTimeout(() => $style.remove(), 500);
   };
 
   $settings.show = () => {
@@ -84,9 +84,9 @@ function createSection(location, key, config, on) {
     const value = config[key];
 
     if (typeof value === "boolean") {
-      contentChilds.append(createSwitchItem(`${location}.${key}`, key, value, on));
+      contentChilds.push(createSwitchItem(`${location}.${key}`, key, value, on));
     } else if (typeof value === "object" && !Array.isArray(value) && Object.keys(value).length > 0) {
-      subSectionsChilds.append(createSection(`${location}.${key}`, key, value, on));
+      subSectionsChilds.push(createSection(`${location}.${key}`, key, value, on));
     }
   }
 

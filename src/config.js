@@ -8,7 +8,7 @@ export default function (data) {
     },
     set(target, key, value) {
       const oldValue = target[key];
-      if (oldValue === value) return;
+      if (JSON.stringify(oldValue) === JSON.stringify(value)) return true;
 
       target[key] = value;
       API.emit("config:change", key, value, oldValue);
@@ -41,7 +41,7 @@ export function defaultConfig() {
   const sectionsList = API.UI_TYPES.reduce((acc, cur) => ((acc[cur] = true), acc), {});
 
   return {
-    customCSS: true,
+    [API.CUSTOM_CSS]: true,
     sections: sectionsList
   };
 }

@@ -1,4 +1,4 @@
-import Config from "./config.js";
+import Config, { defaultConfig } from "./config.js";
 import EventEmitter from "eventemitter3";
 import * as UI from "./styles/index.js";
 import utils from "./utils.js";
@@ -24,7 +24,7 @@ class BetterUIApi extends EventEmitter {
   }
 
   get CUSTOM_CSS() {
-    return "customCss";
+    return "customCSS";
   }
 
   get CUSTOM_CSS_FILE() {
@@ -56,22 +56,17 @@ class BetterUIApi extends EventEmitter {
         await fs(Url.dirname(this.UI_DIRECTORY)).createDirectory(Url.basename(this.UI_DIRECTORY));
       }
 
-      // Check if custom css file exists, create if not
-      const customCssFile = fs(this.CUSTOM_CSS_FILE);
-      const isCustomCssExist = await customCssFile.exists();
-      if (!isCustomCssExist) {
-        await fs(Url.dirname(this.CUSTOM_CSS_FILE)).createFile(
-          Url.basename(this.CUSTOM_CSS_FILE),
-          '/* A custom css file for "Better UI" plugin */\n' + "/* WARNING: Use carefully this might break app */\n"
-        );
-      }
-
-      // Check if config file exists, create if not
-      const configFile = fs(this.CONFIG_FILE);
-      const isConfigExist = await configFile.exists();
-      if (!isConfigExist) {
-        await fs(Url.dirname(this.CONFIG_FILE)).createFile(Url.basename(this.CONFIG_FILE), JSON.stringify(defaultConfig()));
-      }
+      await Promise.all(
+        [
+          [this.CUSTOM_CSS_FILE, `/* A custom css file for "Better UI" plugin */\n/* WARNING: Use carefully this might break app */\n`],
+          [this.CONFIG_FILE, defaultConfig()]
+        ].map(async ([path, content]) => {
+          const file = fs(path);
+          const isExist = await file.exists();
+          if (isExist) return;
+          await fs(Url.dirname(path)).createFile(Url.basename(path), content);
+        })
+      );
     } catch (e) {
       console.error("Failed to check/create:", e);
       throw e;
@@ -84,7 +79,7 @@ class BetterUIApi extends EventEmitter {
       this.#config = Config(data);
       this.emit("config:save");
     } catch (e) {
-      this.emit("error", e);
+      this.#catchError(e);
     }
   }
 
@@ -94,40 +89,56 @@ class BetterUIApi extends EventEmitter {
 
   async loadUI(type) {
     if (this.#els.has(type)) return;
-    const $style = await utils.addStyle(this.getStyleID(type), UI[type] ?? "");
-    this.config.sections[type] = true;
-    this.#els.set(type, $style);
-    return true;
+
+    try {
+      const $style = await utils.addStyle(this.getStyleID(type), UI[type] ?? "");
+      this.config.sections[type] = true;
+      this.#els.set(type, $style);
+      return true;
+    } catch (e) {
+      this.#catchError(e);
+      return;
+    }
   }
 
   async unloadUI(type) {
     if (!this.#els.has(type)) return;
     this.config.sections[type] = false;
+
     const $style = this.#els.get(type);
     $style?.remove();
+
     this.#els.delete(type);
     return true;
   }
 
   async loadCustomCSS() {
     if (this.#els.has(this.CUSTOM_CSS)) return;
-    const $custom = await utils.addStyle(this.getStyleID(this.CUSTOM_CSS), await acode.toInternalUrl(this.CUSTOM_CSS_FILE));
-    this.config.customCSS = true;
-    this.#els.set(this.CUSTOM_CSS, $custom);
-    return true;
+
+    try {
+      const $custom = await utils.addStyle(this.getStyleID(this.CUSTOM_CSS), await acode.toInternalUrl(this.CUSTOM_CSS_FILE));
+      this.config.customCSS = true;
+      this.#els.set(this.CUSTOM_CSS, $custom);
+      return true;
+    } catch (e) {
+      this.#catchError(e);
+      return;
+    }
   }
 
   async unloadCustomCSS() {
     if (!this.#els.has(this.CUSTOM_CSS)) return;
     this.config.customCSS = false;
+
     const $style = this.#els.get(this.CUSTOM_CSS);
-    if ($style) $style?.remove();
+    $style?.remove();
+
     this.#els.delete(this.CUSTOM_CSS);
     return true;
   }
 
   #catchError(e) {
-    console.error("[BUI:ERROR]", e);
+    console.error("[BUI:ERROR]", e.message);
     this.emit("error", e);
   }
 }

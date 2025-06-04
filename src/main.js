@@ -1,8 +1,7 @@
-import API from "./api.js";
-import { createSettingsPage } from "./settings/settings.js";
-import { defaultConfig } from "./config.js";
 import plugin from "../plugin.json";
+import API from "./api.js";
 import utils from "./utils.js";
+import { createSettingsPage } from "./settings/settings.js";
 
 const actionStack = acode.require("actionStack");
 const appSettings = acode.require("settings");
@@ -83,8 +82,8 @@ class BetterUIPlugin {
           });
 
           editorFile.on("save", async () => {
-            await API.unloadCustomCSS();
-            await API.loadCustomCSS();
+            setTimeout(async () => await API.unloadCustomCSS(), 500);
+            setTimeout(async () => await API.loadCustomCSS(), 500);
           });
           actionStack.pop(actionStack.length);
           return;
@@ -96,7 +95,7 @@ class BetterUIPlugin {
 
 async function requestReload() {
   const confirm = await Confirm("[BUI] NOTE", "Do you want to reload the app ? (recommended)");
-  if (confirm) location.reload();
+  if (confirm) setTimeout(() => location.reload(), 500);
 }
 
 if (window.acode) {
