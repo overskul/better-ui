@@ -1,220 +1,106 @@
+import API from "./api.js";
+import { createSettingsPage } from "./settings/settings.js";
+import { defaultConfig } from "./config.js";
 import plugin from "../plugin.json";
-import * as Styles from "./styles/index.js";
+import utils from "./utils.js";
 
 const actionStack = acode.require("actionStack");
 const appSettings = acode.require("settings");
 const Confirm = acode.require("confirm");
-const EditorFile = acode.require("EditorFile");
+const EditorFile = acode.require("editorFile");
 const fs = acode.require("fs");
+const Url = acode.require("url");
 
-class BetterUi {
-  static UI_TYPES = Object.keys(Styles);
-  static UI_PATH = `${window.DATA_STORAGE}/ui`;
-  static CUSTOM_CSS_PATH = `${BetterUi.UI_PATH}/BetterUI.custom.css`;
-
+class BetterUIPlugin {
   constructor() {
-    this.$styles = new Map();
-    this.$custom = null;
-
-    if (!appSettings.value[plugin.id]) {
-      appSettings.value[plugin.id] = {
-        __initialized: false,
-        activeTypes: [...BetterUi.UI_TYPES]
-      };
+    // this is for breaking change
+    if (appSettings.value[plugin.id]) {
+      delete appSettings.value[plugin.id];
       appSettings.update(false);
     }
   }
 
-  get settings() {
-    return appSettings.value[plugin.id];
-  }
-
   async init() {
     try {
-      await this.#checkCustomCssFile();
-      await this.loadStyle(...this.settings.activeTypes, "custom_css");
+      await API.__init();
+      acode.define("@better/ui", API);
+      acode.define("@better/ui/utils", utils);
 
-      if (this.settings.__initialized) return;
-      this.settings.__initialized = true;
-      appSettings.update(false);
+      Object.entries(API.config.sections).forEach(async ([key, value]) => {
+        if (value) await API.loadUI(key);
+      });
+      if (API.config.customCSS) await API.loadCustomCSS();
 
+      const isInitialized = localStorage.getItem("__$bui_isInitialized$__");
+      if (isInitialized === "true") return;
+
+      localStorage.setItem("__$bui_isInitialized$__", "true");
       await requestReload();
     } catch (e) {
+      acode.alert("BUI:ERROR", 'Failed to initialize "BetterUI" plugin' + e.message);
       console.error("BetterUI initialization failed:", e);
-      acode.alert("Error", "Failed to initialize BetterUI plugin");
     }
   }
 
   async destroy() {
     try {
-      const allTypes = [...this.settings.activeTypes, "custom_css"];
+      API.emit("destroy");
+      Object.entries(API.config.sections).forEach(async ([key, value]) => {
+        if (value) await API.unloadUI(key);
+      });
+      if (API.config.customCSS) await API.unloadCustomCSS();
 
-      this.removeStyle(...allTypes);
-      this.$styles.clear();
-      this.$custom = null;
+      localStorage.removeItem("__$bui_isInitialized$__");
 
-      delete appSettings.value[plugin.id];
-      appSettings.update(false);
-
+      acode.define("@better/ui", undefined);
+      acode.define("@better/ui/utils", undefined);
       await requestReload();
     } catch (e) {
       console.error("BetterUI destroy failed:", e);
+      acode.alert("BUI:ERROR", 'Failed to destroy "BetterUI" plugin (restart app recommended)' + e.message);
     }
   }
 
-  async resetUi(...types) {
-    try {
-      this.removeStyle(...types);
-      await this.loadStyle(...types);
-    } catch (e) {
-      console.error("Failed to reset UI:", e);
-      acode.alert("Error", "Failed to reset UI styles");
-    }
-  }
-
-  getSettings() {
+  getPluginSettings() {
     return {
       list: [
         {
-          key: "custom_css",
-          text: "Add Custom CSS",
-          info: "Make your imaginations real.\nPlease edit content in separate place and paste it here for better control.\n(NOTE: be careful this may break the app)"
+          key: "settings",
+          text: "Open Settings"
         },
-        ...BetterUi.UI_TYPES.map(type => ({
-          key: type,
-          text: firstUpperCase(type),
-          checkbox: this.settings.activeTypes.includes(type)
-        }))
+        {
+          key: "custom_css",
+          text: "Edit Custom CSS"
+        }
       ],
-      cb: async (key, value) => {
-        try {
-          if (key === "custom_css") {
-            const filename = BetterUi.CUSTOM_CSS_PATH.split("/").pop();
-            const editorFile = new EditorFile(filename, {
-              uri: BetterUi.CUSTOM_CSS_PATH
-            });
+      cb: async key => {
+        if (key === "settings") return await createSettingsPage();
+        if (key === "custom_css") {
+          const filename = Url.basename(API.CUSTOM_CSS_FILE);
+          const editorFile = new EditorFile(filename, {
+            uri: API.CUSTOM_CSS_FILE
+          });
 
-            editorFile.on("save", async () => {
-              await this.resetUi("custom_css");
-            });
-
-            actionStack.pop(actionStack.length);
-            return;
-          }
-
-          const activeTypes = this.settings.activeTypes;
-          if (value && !activeTypes.includes(key)) {
-            await this.loadStyle(key);
-          } else if (!value && activeTypes.includes(key)) {
-            this.removeStyle(key);
-          }
-        } catch (e) {
-          console.error("Settings callback failed:", e);
-          acode.alert("Error", "Failed to update settings");
+          editorFile.on("save", async () => {
+            await API.unloadCustomCSS();
+            await API.loadCustomCSS();
+            console.log("saved");
+          });
+          actionStack.pop(actionStack.length);
+          return;
         }
       }
     };
   }
-
-  async #checkCustomCssFile() {
-    try {
-      // Check if ui dir exists, create if not
-      const uiDir = fs(BetterUi.UI_PATH);
-      const isUiDirExist = await uiDir.exists();
-      if (!isUiDirExist) {
-        await fs(window.DATA_STORAGE).createDirectory("ui");
-      }
-
-      // Check if custom css file exists, create if not
-      const customCssFile = fs(BetterUi.CUSTOM_CSS_PATH);
-      const isCustomCssExist = await customCssFile.exists();
-      if (!isCustomCssExist) {
-        await fs(BetterUi.UI_PATH).createFile(
-          "BetterUI.custom.css",
-          '/* A custom css file for "Better UI" plugin */\n' +
-            "/* WARNING: Use carefully this might break app */\n"
-        );
-      }
-    } catch (e) {
-      console.error("Failed to check/create custom CSS file:", e);
-      throw e;
-    }
-  }
-
-  async loadStyle(...types) {
-    for (const type of types) {
-      if (type === "custom_css" && !this.$custom) {
-        const url = `${await acode.toInternalUrl(
-          BetterUi.CUSTOM_CSS_PATH
-        )}?v=${Date.now()}`;
-        this.$custom = tag("link");
-        this.$custom.id = "better-ui_custom-css";
-        this.$custom.rel = "stylesheet";
-        this.$custom.href = url;
-        document.head.append(this.$custom);
-        continue;
-      }
-
-      if (this.$styles.has(type)) continue;
-      const $style = tag("style");
-      $style.id = `better-ui_${type}`;
-      $style.innerHTML = Styles[type] ?? "";
-      this.$styles.set(type, $style);
-      this.settings.activeTypes.push(type);
-      document.head.append($style);
-    }
-
-    appSettings.update(false);
-  }
-
-  removeStyle(...types) {
-    for (const type of types) {
-      if (type === "custom_css" && this.$custom) {
-        this.$custom.remove();
-        this.$custom = null;
-        continue;
-      }
-
-      const $style = this.$styles.get(type);
-      const index = this.settings.activeTypes.indexOf(type);
-      if (!$style || index === -1) continue;
-      $style.remove();
-      this.$styles.delete(type);
-      this.settings.activeTypes.splice(index, 1);
-    }
-
-    appSettings.update(false);
-  }
-}
-
-function firstUpperCase(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
 async function requestReload() {
-  const confirm = await Confirm(
-    "[BetterUI] NOTE",
-    "Do Want to reload app ? (recommended)"
-  );
-
+  const confirm = await Confirm("[BUI] NOTE", "Do you want to reload the app ? (recommended)");
   if (confirm) location.reload();
 }
 
 if (window.acode) {
-  const betterUI = new BetterUi();
-  acode.define("@better/ui", {
-    // constants
-    UiTypes: BetterUi.UI_TYPES,
-    UiPath: BetterUi.UI_PATH,
-    CustomCssPath: BetterUi.CUSTOM_CSS_PATH,
-
-    // methods
-    resetUi: betterUI.resetUi.bind(betterUI),
-    loadStyle: betterUI.loadStyle.bind(betterUI),
-    removeStyle: betterUI.removeStyle.bind(betterUI),
-    getActiveTypes: () => betterUI.settings.activeTypes
-  });
-
+  const betterUI = new BetterUIPlugin();
   acode.setPluginInit(
     plugin.id,
     async (baseUrl, $page, cache) => {
@@ -225,7 +111,7 @@ if (window.acode) {
         console.error("Plugin initialization failed:", e);
       }
     },
-    betterUI.getSettings()
+    betterUI.getPluginSettings()
   );
 
   acode.setPluginUnmount(plugin.id, async () => {
