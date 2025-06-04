@@ -42,12 +42,10 @@ async function handleOnEvents(type, data) {
 
     if (API.UI_TYPES.includes(key)) {
       // load UI type
-      if (value) await API.loadUI(key);
-      else await API.unloadUI(key);
+      value ? await API.loadUI(key) : await API.unloadUI(key);
     } else if (API.CUSTOM_CSS === key) {
       // Load Custom CSS
-      if (value) await API.loadCustomCSS();
-      else await API.unloadCustomCSS();
+      value ? await API.loadCustomCSS() : await API.unloadCustomCSS();
     } else {
       // Set Property
       setVFL(API.config, location, value);
@@ -79,16 +77,21 @@ function createSection(location, key, config, on) {
     ]
   });
 
+  const contentChilds = [];
+  const subSectionsChilds = [];
+
   for (const key in config) {
     const value = config[key];
 
     if (typeof value === "boolean") {
-      $content.append(createSwitchItem(`${location}.${key}`, key, value, on));
+      contentChilds.append(createSwitchItem(`${location}.${key}`, key, value, on));
     } else if (typeof value === "object" && !Array.isArray(value) && Object.keys(value).length > 0) {
-      $subSections.append(createSection(`${location}.${key}`, key, value, on));
+      subSectionsChilds.append(createSection(`${location}.${key}`, key, value, on));
     }
   }
 
+  $content.append(...contentChilds);
+  $subSections.append(...subSectionsChilds);
   return $section;
 }
 
@@ -103,11 +106,10 @@ function createSwitchItem(location, key, value, on) {
     children: [
       tag("div", {
         className: "name",
-        textContent: splitCamelCase(location.split(".").pop() || "[?]")
+        textContent: firstUpperCase(key || "???")
       }),
       tag("div", {
         className: "tail",
-        // innerHTML: '<label class="switch"><input type="checkbox"/><span class="slider"></span></label>',
         children: [
           tag("label", {
             className: "switch",
@@ -141,11 +143,8 @@ function createSwitchItem(location, key, value, on) {
   return $item;
 }
 
-function splitCamelCase(str) {
-  return str
-    .replace(/([A-Z])/g, " $1")
-    .replace(/^./, firstChar => firstChar.toUpperCase())
-    .trim();
+function firstUpperCase(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 function getVFL(obj, location) {
