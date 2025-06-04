@@ -8,8 +8,10 @@ export default function (data) {
     },
     set(target, key, value) {
       const oldValue = target[key];
+      if (oldValue === value) return;
+
       target[key] = value;
-      API.emit("config:change", key, target[key], oldValue);
+      API.emit("config:change", key, value, oldValue);
 
       if (timeout) clearTimeout(timeout);
       timeout = setTimeout(async () => {
