@@ -70,7 +70,7 @@ class BetterUIPlugin {
         },
         {
           key: "custom_css",
-          text: "Edit Custom CSS"
+          text: "Edit CustomCSS"
         }
       ],
       cb: async key => {
