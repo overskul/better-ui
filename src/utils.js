@@ -4,29 +4,29 @@ const Url = acode.require("url");
 export default {
   async addStyle(id, content) {
     if (this.isFilePath(content)) {
-      let style;
       try {
-        style = await fs(content).readFile("utf8");
-      } catch (e) {
-        style = await fs(acode.toInternalUrl(content)).readFile("utf8");
-      }
+        // use toInternalUrl first
+        const url = await acode.toInternalUrl(content);
+        if (!url) throw Error("Url not found");
 
-      if (!style) return;
-      const sTag = tag("style", { id, innerHTML: style });
-      document.head.append(sTag);
-      return sTag;
+        const sLink = tag("link", { id, rel: "stylesheet", href: content });
+        document.head.append(sLink);
+        return sLink;
+      } catch (e) {
+        // read file instead
+        const style = await fs(content).readFile("utf8");
+        if (!style || style?.trim()?.length === 0) return;
+
+        const sTag = tag("style", { id, innerHTML: style });
+        document.head.append(sTag);
+        return sTag;
+      }
     }
 
     if (this.isCssCode(content)) {
       const sTag = tag("style", { id, innerHTML: content });
       document.head.append(sTag);
       return sTag;
-    }
-
-    if (this.isStylesheetPath(content)) {
-      const sLink = tag("link", { id, rel: "stylesheet", href: content });
-      document.head.append(sLink);
-      return sLink;
     }
   },
 
@@ -49,11 +49,5 @@ export default {
     const hasSelectorBlock = /[^{]+\{[^}]*\}/.test(input);
     const hasAtRule = /@(media|keyframes|import|font-face|supports|charset)/i.test(input);
     return hasPropertyValue || hasSelectorBlock || hasAtRule;
-  },
-
-  isStylesheetPath(input) {
-    if (typeof input !== "string" || !input.trim()) return false;
-    const cleanPath = input.split(/[?#]/)[0];
-    return /\.css$/i.test(cleanPath);
   }
 };
