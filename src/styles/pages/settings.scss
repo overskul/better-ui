@@ -92,6 +92,53 @@
 }
 
 /****************************************
+ *** Plugins
+****************************************/
+#plugins {
+  &.list .list-item,
+  .list .list-item {
+    padding: 0.5rem;
+    min-height: fit-content !important;
+
+    .plugin-meta .plugin-stats {
+      margin-right: 0;
+    }
+
+    .plugin-header .plugin-info {
+      flex-direction: row !important;
+      align-items: center !important;
+      gap: 0 !important;
+
+      .plugin-price {
+        display: none;
+        visibility: hidden;
+      }
+
+      .plugin-toggle-switch {
+        min-width: 0 !important;
+        max-width: fit-content !important;
+        margin-left: 0 !important;
+
+        .plugin-toggle-track {
+          border-radius: 0.5rem;
+
+          .plugin-toggle-thumb {
+            border-radius: 0.5rem;
+          }
+        }
+      }
+    }
+  }
+
+  .options span {
+    opacity: 0.5;
+
+    &.active {
+      opacity: 1;
+    }
+  }
+}
+/****************************************
  *** Search Bar
 ****************************************/
 

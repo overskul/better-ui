@@ -1,47 +1,46 @@
-import API from "./api.js";
-
-export default function (data) {
+export default function (data, { emit, save }) {
   let timeout;
-  return new Proxy(data, {
-    get(target, key, rec) {
-      return target[key];
-    },
-    set(target, key, value) {
-      const oldValue = target[key];
-      if (JSON.stringify(oldValue) === JSON.stringify(value)) return true;
 
-      target[key] = value;
-      API.emit("config:change", key, value, oldValue);
+  const createDeepProxy = target => {
+    return new Proxy(target, {
+      get(target, key) {
+        const value = target[key];
+        if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+          return createDeepProxy(value);
+        }
+        return value;
+      },
+      set(target, key, value) {
+        const oldValue = target[key];
+        if (JSON.stringify(oldValue) === JSON.stringify(value)) return true;
 
-      if (timeout) clearTimeout(timeout);
-      timeout = setTimeout(async () => {
-        await API.updateConfig(target);
-        timeout = null;
-      }, 500);
+        target[key] = value;
+        emit('config:change', key, value, oldValue);
 
-      return true;
-    },
-    deleteProperty(target, key) {
-      const value = target[key];
-      delete target[key];
-      API.emit("config:delete", key, value);
+        if (timeout) clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          save(data);
+          timeout = null;
+        }, 500);
 
-      if (timeout) clearTimeout(timeout);
-      timeout = setTimeout(async () => {
-        await API.updateConfig(target);
-        timeout = null;
-      }, 500);
+        return true;
+      },
+      deleteProperty(target, key) {
+        const value = target[key];
+        if (Reflect.deleteProperty(target, key)) {
+          emit('config:delete', key, value);
 
-      return true;
-    }
-  });
-}
-
-export function defaultConfig() {
-  const sectionsList = API.UI_TYPES.reduce((acc, cur) => ((acc[cur] = true), acc), {});
-
-  return {
-    [API.CUSTOM_CSS]: true,
-    sections: sectionsList
+          if (timeout) clearTimeout(timeout);
+          timeout = setTimeout(() => {
+            save(data);
+            timeout = null;
+          }, 500);
+          return true;
+        }
+        return false;
+      }
+    });
   };
+
+  return createDeepProxy(data);
 }

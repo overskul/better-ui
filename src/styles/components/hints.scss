@@ -8,15 +8,23 @@
   [data-action='hint'],
   [action='hint'] {
     overflow-y: none !important;
-    height: 1rem !important;
+    /* height: 1rem !important; */
     padding: 1.5rem 1rem;
     background: var(--primary-color) !important;
     border: 1px solid var(--border-color);
     border-radius: 0.5rem;
+    height: auto !important;
+    overflow-y: hidden !important;
 
     &:hover,
     &:active {
       border-color: var(--active-color);
+    }
+
+    [data-str]::after,
+    [data-str]::after {
+      content: '\A' attr(data-str);
+      white-space: pre;
     }
   }
 }

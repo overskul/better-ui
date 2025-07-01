@@ -2,7 +2,7 @@
   "id": "x.better.ui",
   "name": "Better UI",
   "main": "main.js",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "readme": "readme.md",
   "icon": "icon.png",
   "license": "MIT",
@@ -14,7 +14,7 @@
     "UI",
     "Customization"
   ],
-  "minVersionCode": 958,
+  "minVersionCode": 962,
   "author": {
     "name": "overskul",
     "github": "overskul"

@@ -1,15 +1,15 @@
-import Config, { defaultConfig } from "./config.js";
-import EventEmitter from "eventemitter3";
-import * as UI from "./styles/index.js";
-import utils from "./utils.js";
+import Config from './config.js';
+import EventEmitter from 'eventemitter3';
+import * as UI from './styles/index.js';
+import utils from './utils.js';
 
-const fs = acode.require("fs");
-const Url = acode.require("url");
+const fs = acode.require('fs');
+const Url = acode.require('url');
 
 class BetterUIApi extends EventEmitter {
   #config;
-  #els = new Map();
   #isInit = false;
+  _els = new Map();
 
   get UI_TYPES() {
     return [...Object.keys(UI)];
@@ -24,7 +24,7 @@ class BetterUIApi extends EventEmitter {
   }
 
   get CUSTOM_CSS() {
-    return "customCSS";
+    return 'customCSS';
   }
 
   get CUSTOM_CSS_FILE() {
@@ -35,12 +35,24 @@ class BetterUIApi extends EventEmitter {
     return this.#config;
   }
 
+  get defaultConfig() {
+    const sectionsList = this.UI_TYPES.reduce((acc, cur) => ((acc[cur] = true), acc), {});
+    return {
+      [this.CUSTOM_CSS]: true,
+      sections: sectionsList
+    };
+  }
+
   async __init() {
     if (this.#isInit) return;
 
     try {
       await this.#checkAssets();
-      this.#config = Config(await fs(this.CONFIG_FILE).readFile("json"));
+      const data = await fs(this.CONFIG_FILE).readFile('json');
+      this.#config = Config(data, {
+        emit: this.emit.bind(this),
+        save: this.updateConfig.bind(this)
+      });
       this.#isInit = true;
     } catch (e) {
       this.#catchError(e);
@@ -59,7 +71,7 @@ class BetterUIApi extends EventEmitter {
       await Promise.all(
         [
           [this.CUSTOM_CSS_FILE, `/* A custom css file for "Better UI" plugin */\n/* WARNING: Use carefully this might break app */\n`],
-          [this.CONFIG_FILE, defaultConfig()]
+          [this.CONFIG_FILE, this.defaultConfig]
         ].map(async ([path, content]) => {
           const file = fs(path);
           const isExist = await file.exists();
@@ -68,16 +80,15 @@ class BetterUIApi extends EventEmitter {
         })
       );
     } catch (e) {
-      console.error("Failed to check/create:", e);
+      console.error('Failed to check/create:', e);
       throw e;
     }
   }
 
   async updateConfig(data = this.#config) {
     try {
-      await fs(this.CONFIG_FILE).writeFile(JSON.stringify(data));
-      this.#config = Config(data);
-      this.emit("config:save");
+      await fs(this.CONFIG_FILE).writeFile(JSON.stringify(data, null, 4));
+      this.emit('config:save');
     } catch (e) {
       this.#catchError(e);
     }
@@ -88,12 +99,12 @@ class BetterUIApi extends EventEmitter {
   }
 
   async loadUI(type) {
-    if (this.#els.has(type)) return;
+    if (this._els.has(type)) return;
 
     try {
-      const $style = await utils.addStyle(this.getStyleID(type), UI[type] ?? "");
+      const $style = await utils.addStyle(this.getStyleID(type), UI[type] ?? '');
       this.config.sections[type] = true;
-      this.#els.set(type, $style);
+      this._els.set(type, $style);
       return true;
     } catch (e) {
       this.#catchError(e);
@@ -102,23 +113,23 @@ class BetterUIApi extends EventEmitter {
   }
 
   async unloadUI(type) {
-    if (!this.#els.has(type)) return;
+    if (!this._els.has(type)) return;
     this.config.sections[type] = false;
 
-    const $style = this.#els.get(type);
+    const $style = this._els.get(type);
     $style?.remove();
 
-    this.#els.delete(type);
+    this._els.delete(type);
     return true;
   }
 
   async loadCustomCSS() {
-    if (this.#els.has(this.CUSTOM_CSS)) return;
+    if (this._els.has(this.CUSTOM_CSS)) return;
 
     try {
       const $custom = await utils.addStyle(this.getStyleID(this.CUSTOM_CSS), await acode.toInternalUrl(this.CUSTOM_CSS_FILE));
       this.config.customCSS = true;
-      this.#els.set(this.CUSTOM_CSS, $custom);
+      this._els.set(this.CUSTOM_CSS, $custom);
       return true;
     } catch (e) {
       this.#catchError(e);
@@ -127,19 +138,19 @@ class BetterUIApi extends EventEmitter {
   }
 
   async unloadCustomCSS() {
-    if (!this.#els.has(this.CUSTOM_CSS)) return;
+    if (!this._els.has(this.CUSTOM_CSS)) return;
     this.config.customCSS = false;
 
-    const $style = this.#els.get(this.CUSTOM_CSS);
+    const $style = this._els.get(this.CUSTOM_CSS);
     $style?.remove();
 
-    this.#els.delete(this.CUSTOM_CSS);
+    this._els.delete(this.CUSTOM_CSS);
     return true;
   }
 
   #catchError(e) {
-    console.error("[BUI:ERROR]", e.message);
-    this.emit("error", e);
+    console.error('[BUI:ERROR]', e.message);
+    this.emit('error', e);
   }
 }
 
