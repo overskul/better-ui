@@ -1,3 +1,4 @@
+import * as YAML from "yaml";
 import plugin from '../plugin.json';
 import API from './api.js';
 import utils from './utils.js';
@@ -25,10 +26,16 @@ class BetterUIPlugin {
       acode.define('@better/ui', API);
       acode.define('@better/ui/utils', utils);
 
+      // Load enabled UI components
       const promises = [];
-      Object.entries(API.config.sections).forEach(([key, value]) => (value ? promises.push(API.loadUI(key)) : null));
+      Object.entries(API.config.sections).forEach(([key, value]) => {
+        if (value) {
+          promises.push(API.loadUI(key));
+        }
+      });
+      
       if (API.config.customCSS) promises.push(API.loadCustomCSS());
-      await Promise.all(promises);
+      await Promise.allSettled(promises);
 
       const isInitialized = localStorage.getItem('__$bui_isInitialized$__');
       if (isInitialized === 'true') return;
@@ -36,7 +43,7 @@ class BetterUIPlugin {
       localStorage.setItem('__$bui_isInitialized$__', 'true');
       await requestReload();
     } catch (e) {
-      acode.alert('BUI:ERROR', 'Failed to initialize "BetterUI" plugin' + e.message);
+      acode.alert('BUI:ERROR', 'Failed to initialize "BetterUI" plugin: ' + e.message);
       console.error('BetterUI initialization failed:', e);
     }
   }
@@ -44,16 +51,17 @@ class BetterUIPlugin {
   async destroy() {
     try {
       API.emit('destroy');
+      await API.destroy();
 
-      API._els.values().forEach(e => e.remove());
       localStorage.removeItem('__$bui_isInitialized$__');
 
       acode.define('@better/ui', undefined);
       acode.define('@better/ui/utils', undefined);
+      
       await requestReload();
     } catch (e) {
       console.error('BetterUI destroy failed:', e);
-      acode.alert('BUI:ERROR', 'Failed to destroy "BetterUI" plugin (restart app recommended)' + e.message);
+      acode.alert('BUI:ERROR', 'Failed to destroy "BetterUI" plugin (restart app recommended): ' + e.message);
     }
   }
 
@@ -75,6 +83,7 @@ class BetterUIPlugin {
       ],
       cb: async key => {
         if (key === 'settings') return await createSettingsPage();
+        
         if (key === 'raw_settings') {
           const filename = Url.basename(API.CONFIG_FILE);
           const editorFile = new EditorFile(filename, {
@@ -82,11 +91,18 @@ class BetterUIPlugin {
           });
 
           editorFile.on('save', async ({ target }) => {
-            setTimeout(async () => await API.updateConfig(JSON.parse(target.session.getValue())), 500);
+            try {
+              const yamlContent = target.session.getValue();
+              const parsedData = YAML.parse(yamlContent);
+              setTimeout(async () => await API.updateConfig(parsedData), 500);
+            } catch (e) {
+              acode.alert('YAML Error', 'Failed to parse YAML configuration: ' + e.message);
+            }
           });
           actionStack.pop(actionStack.length);
           return;
         }
+        
         if (key === 'custom_css') {
           const filename = Url.basename(API.CUSTOM_CSS_FILE);
           const editorFile = new EditorFile(filename, {
@@ -94,8 +110,15 @@ class BetterUIPlugin {
           });
 
           editorFile.on('save', async () => {
-            setTimeout(async () => await API.unloadCustomCSS(), 500);
-            setTimeout(async () => await API.loadCustomCSS(), 500);
+            // Reload custom CSS with improved error handling
+            setTimeout(async () => {
+              try {
+                await API.unloadCustomCSS();
+                await API.loadCustomCSS();
+              } catch (e) {
+                console.error('Failed to reload custom CSS:', e);
+              }
+            }, 500);
           });
           actionStack.pop(actionStack.length);
           return;
@@ -106,7 +129,7 @@ class BetterUIPlugin {
 }
 
 async function requestReload() {
-  const confirm = await Confirm('[BUI] NOTE', 'Do you want to reload the app ? (recommended)');
+  const confirm = await Confirm('[BUI] NOTE', 'Do you want to reload the app? (recommended)');
   if (confirm) setTimeout(() => location.reload(), 1000);
 }
 
