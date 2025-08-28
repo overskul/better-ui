@@ -46,6 +46,20 @@ $sidebar-app-border-radius: 0.5rem;
       border: 1px solid transparent;
 
       &.active {
+        --active-icon-color: radial-gradient(
+          circle,
+          rgba(0, 0, 0, 0) 5%,
+          rgb(from var(--active-color) r g b / 0.25)
+        ) !important;
+        border-color: rgb(from var(--active-color) r g b / 0.5) !important;
+      }
+
+      // NOTE: A temp solution to use active-state on official apps only
+      // until custom icons have a special selector to prevent include it
+      &[data-id="files"].active,
+      &[data-id="searchInFiles"].active,
+      &[data-id="extensions"].active,
+      &[data-id="notification"].active {
         @include m.active-state;
       }
     }
@@ -130,7 +144,7 @@ $sidebar-app-border-radius: 0.5rem;
       .header {
         box-sizing: border-box;
         width: 100%;
-        padding: 0 1rem;
+        padding: 0 1rem 1rem 1rem;
         gap: 0.5rem;
 
         input {
@@ -148,6 +162,7 @@ $sidebar-app-border-radius: 0.5rem;
         .title {
           display: flex !important;
           align-items: center !important;
+          margin: 0 !important;
           // justify-content: space-between !important;
 
           span:first-of-type {
