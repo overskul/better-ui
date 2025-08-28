@@ -14,6 +14,7 @@
     "UI",
     "Customization"
   ],
+  "repository": "https://github.com/overskul/better-ui",
   "minVersionCode": 964,
   "author": {
     "name": "overskul",
