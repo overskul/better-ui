@@ -186,9 +186,6 @@ $sidebar-app-border-radius: 0.5rem;
       }
 
       .scroll:not(.search-result) {
-        display: flex;
-        flex-direction: column;
-        gap: 0.2rem;
         padding: 0.8rem 0.5rem !important;
 
         .tile {
@@ -197,11 +194,14 @@ $sidebar-app-border-radius: 0.5rem;
           background-color: var(--secondary-color) !important;
           padding: 1.5rem 0.5rem !important;
           border-radius: 0 !important;
-          border: 1px solid var(--secondary-color) !important;
 
           &:hover,
           &:active {
             filter: brightness(1.5);
+          }
+
+          &:not(:last-child) {
+            border-bottom: 0.2rem solid var(--primary-color);
           }
 
           &:first-child {
