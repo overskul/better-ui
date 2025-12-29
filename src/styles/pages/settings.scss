@@ -74,6 +74,15 @@
         }
       }
 
+      &[data-key="reset"] {
+        background: rgb(from var(--danger-color) r g b / 0.75) !important;
+        
+        &:active,
+        &:hover {
+          border-color: var(--danger-color) !important;
+        }
+      }
+
       & .plugin-meta {
         opacity: 0.5;
       }
@@ -94,6 +103,7 @@
 /****************************************
  *** Plugins
 ****************************************/
+
 .main#plugins {
   #plugin-list {
     display: flex !important;
@@ -120,6 +130,10 @@
         .plugin-main {
           .plugin-title {
             margin: 0 !important;
+
+            .plugin-version {
+              padding: 0 !important;
+            }
           }
 
           .plugin-meta .plugin-stats {
@@ -151,41 +165,7 @@
     }
   }
 }
-/*
-<div data-id="x.discord.rpc" data-plugin-enabled="true" data-action="open" data-installed="true" class="list-item">
-      <div class="plugin-header">
-        <div class="plugin-icon">
-          <img alt="Discord Rich Presence icon" src="https://localhost/__cdvfile_files-external__/plugins/x.discord.rpc/icon.png">
-        </div>
-        <div class="plugin-info">
-          <div class="plugin-main">
-            <div class="plugin-title">
-              <span title="Discord Rich Presence" class="plugin-name">
-                Discord Rich Presence
-              </span>
-              <span class="plugin-version">v0.0.2</span>
-            </div>
-            <div class="plugin-meta">
-              <div title="overskul" class="plugin-stats plugin-author">
-                <span class="icon person"></span>
-                overskul
-              </div>
-              <span class="plugin-meta-dot"></span>
-              <div class="plugin-stats">
-                <span class="licons scale" style="font-size: 12px;"></span>
-                MIT
-              </div>
-            </div>
-          </div>
-          <span data-enabled="true" class="plugin-toggle-switch">
-              <span data-enabled="true" class="plugin-toggle-track">
-                <span class="plugin-toggle-thumb"></span>
-              </span>
-            </span>
-        </div>
-      </div>
-    </div>
-*/
+
 /****************************************
  *** Search Bar
 ****************************************/
