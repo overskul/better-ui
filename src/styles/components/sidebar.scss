@@ -41,9 +41,12 @@ $sidebar-app-border-radius: 0.5rem;
       justify-content: center;
       font-size: 1.25rem;
       width: $sidebar-app-size;
-      height: $sidebar-app-size;
+      height: $sidebar-app-size !important;
       border-radius: $sidebar-app-border-radius;
       border: 1px solid transparent;
+      margin: 0 !important;
+
+      min-height: auto !important;
 
       &.active {
         --active-icon-color: radial-gradient(
