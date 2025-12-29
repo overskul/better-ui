@@ -94,42 +94,55 @@
 /****************************************
  *** Plugins
 ****************************************/
-#plugins {
-  &.list .list-item,
-  .list .list-item {
-    padding: 0.5rem;
-    min-height: fit-content !important;
+.main#plugins {
+  #plugin-list {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
+    padding: 1rem 1rem !important;
 
-    .plugin-meta .plugin-stats {
-      margin-right: 0;
-    }
+    &.list .list-item,
+    .list .list-item {
+      padding: 0.5rem !important;
+      min-height: fit-content !important;
 
-    .plugin-header .plugin-info {
-      flex-direction: row !important;
-      align-items: center !important;
-      gap: 0 !important;
+      .plugin-header .plugin-info {
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 0 !important;
 
-      .plugin-price {
-        display: none;
-        visibility: hidden;
-      }
+        .plugin-price {
+          display: none;
+          visibility: hidden;
+        }
 
-      .plugin-toggle-switch {
-        min-width: 0 !important;
-        max-width: fit-content !important;
-        margin-left: 0 !important;
+        .plugin-main {
+          .plugin-title {
+            margin: 0 !important;
+          }
 
-        .plugin-toggle-track {
-          border-radius: 0.5rem;
+          .plugin-meta .plugin-stats {
+            margin-right: 0;
+          }
+        }
 
-          .plugin-toggle-thumb {
+        .plugin-toggle-switch {
+          min-width: 0 !important;
+          max-width: fit-content !important;
+          margin-left: 0 !important;
+
+          .plugin-toggle-track {
             border-radius: 0.5rem;
+
+            .plugin-toggle-thumb {
+              border-radius: 0.5rem;
+            }
           }
         }
       }
     }
   }
-
   .options span {
     opacity: 0.5;
 
@@ -138,6 +151,41 @@
     }
   }
 }
+/*
+<div data-id="x.discord.rpc" data-plugin-enabled="true" data-action="open" data-installed="true" class="list-item">
+      <div class="plugin-header">
+        <div class="plugin-icon">
+          <img alt="Discord Rich Presence icon" src="https://localhost/__cdvfile_files-external__/plugins/x.discord.rpc/icon.png">
+        </div>
+        <div class="plugin-info">
+          <div class="plugin-main">
+            <div class="plugin-title">
+              <span title="Discord Rich Presence" class="plugin-name">
+                Discord Rich Presence
+              </span>
+              <span class="plugin-version">v0.0.2</span>
+            </div>
+            <div class="plugin-meta">
+              <div title="overskul" class="plugin-stats plugin-author">
+                <span class="icon person"></span>
+                overskul
+              </div>
+              <span class="plugin-meta-dot"></span>
+              <div class="plugin-stats">
+                <span class="licons scale" style="font-size: 12px;"></span>
+                MIT
+              </div>
+            </div>
+          </div>
+          <span data-enabled="true" class="plugin-toggle-switch">
+              <span data-enabled="true" class="plugin-toggle-track">
+                <span class="plugin-toggle-thumb"></span>
+              </span>
+            </span>
+        </div>
+      </div>
+    </div>
+*/
 /****************************************
  *** Search Bar
 ****************************************/
