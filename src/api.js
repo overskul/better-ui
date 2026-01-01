@@ -72,6 +72,8 @@ class BetterUIApi extends EventEmitter {
         // await this.#saveConfigFile(data);
       }
       
+      // this add new settings from defaultConfig then apply the original data
+      data = utils.deepMerge(this.defaultConfig, data);
       this.#config = Config(data, {
         emit: this.emit.bind(this),
         save: this.#queueUpdate.bind(this)

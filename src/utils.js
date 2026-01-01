@@ -95,5 +95,21 @@ export default {
     const matchesCssPattern = cssPatterns.some(pattern => pattern.test(input));
     const looksLikeFilePath = this.isFilePath(input);
     return matchesCssPattern && !looksLikeFilePath;
+  },
+
+  deepMerge(defaults, data) {
+    const result = { ...defaults };
+    for (const key in data) {
+      if (
+        typeof data[key] === "object" &&
+        data[key] !== null &&
+        !Array.isArray(data[key])
+      ) {
+        result[key] = this.deepMerge(defaults[key] || {}, data[key]);
+      } else {
+        result[key] = data[key];
+      }
+    }
+    return result;
   }
 };
