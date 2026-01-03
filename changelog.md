@@ -1,21 +1,26 @@
-# v1.6.0
-## Fixes:
-- Fix `openFileList` extra border.
-- Fix `Sidebar > Plugins` header title order.
-- Fix `Sidebar` apps padding.
+# v1.11.3
 
-## New:
-- Added `Reload` confirm dialog, when install or uninstall plugin.
-- Added border to `Sidebar > Avatar`.
-- Added borders `About` page.
-- Added border radius in `FileBroswer` navs.
-- Restyle `donate` page.
+## What's Changed
 
----
+### Fixes
+* Readme: api documentation link by @igorantonow314 in https://github.com/overskul/better-ui/pull/9
+* Style:
+  * Plugin list settings width.
+  * Plugin list settings padding from `0.8` to `0.75`.
+  * Plugin list tile version padding in worng selector.
+  * App settings List padding from `1` to `0.75` to match plugin list.
+  * Move `open-file-list` to separate file for better readability and style structure.
+  * Sidebar apps broken size in newer Acode updates.
+  * New default options doesn't included in config file.
+  * Search result height when choose a filter.
 
-# v1.5.0
-- Update `Sidebar` UI.
-- Update `Settings` page UI.
-- Added UI to new `Plugins` page.
-- Improvement and fix UI in some parts.
-- Fix the refresh after disable/enable ui in settings.
+## Features
+* Style:
+  * New background for app settings option `reset default settings`.
+  * New handler system for style propertys.
+  * New style property `customPageLoader`.
+
+## New Contributors
+* @igorantonow314 made their first contribution in https://github.com/overskul/better-ui/pull/9
+
+**Full Changelog**: https://github.com/overskul/better-ui/compare/v1.10.2...v1.11.3
