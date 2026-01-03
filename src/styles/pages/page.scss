@@ -25,3 +25,87 @@ wc-page {
     }
   }
 }
+
+body.bui_custom-loader {
+  &:not(.loading).title-loading {
+    &.title-loading-hide {
+      &::before {
+        animation: fade-out 200ms ease-in forwards;
+        pointer-events: none;
+      }
+
+      &::after {
+        animation: fade-out-center 200ms ease-in forwards;
+        pointer-events: none;
+      }
+    }
+
+    &::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 998;
+      pointer-events: auto;
+      animation: fade-in 200ms ease-out forwards; // simple fade
+    }
+
+    &::after {
+      content: '';
+      background-color: var(--primary-color);
+      border-radius: 1rem;
+      position: fixed;
+      height: 25vh;
+      width: 50vw;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-image: url(assets/tail-spin.svg);
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 30px;
+      box-shadow: 0 0 4px 0 var(--box-shadow-color);
+      border: 1px solid var(--popup-border-color);
+      z-index: 999;
+      box-sizing: border-box;
+      animation: fade-in-center 200ms ease-out forwards; // fade + scale from center
+    }
+  }
+}
+
+// Overlay fade only
+@keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes fade-out {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+// Loader fade + scale from center
+@keyframes fade-in-center {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes fade-out-center {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+}

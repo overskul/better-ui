@@ -48,7 +48,7 @@ async function handleOnEvents(type, data) {
       value ? await API.loadCustomCSS() : await API.unloadCustomCSS();
     } else {
       // Set Property
-      setVFL(API.config, location, value);
+      setValueFromLocation(API.config, location, value);
     }
 
     loader.destroy();
@@ -147,7 +147,8 @@ function firstUpperCase(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-function getVFL(obj, location) {
+
+function getValueFromLocation(obj, location) {
   const parts = location.split(".");
   if (parts[0] === "$root$") parts.shift();
 
@@ -159,7 +160,7 @@ function getVFL(obj, location) {
   return current;
 }
 
-function setVFL(obj, location, val) {
+function setValueFromLocation(obj, location, val) {
   const parts = location.split(".");
   if (parts[0] === "$root$") parts.shift();
 

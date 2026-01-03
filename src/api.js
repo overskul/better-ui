@@ -1,6 +1,7 @@
 import * as YAML from "yaml";
 import Config from './Config.js';
 import ConfigQueue from './ConfigQueue.js';
+import { handleConfig } from "./ApiHandlers.js";
 import EventEmitter from 'eventemitter3';
 import * as UI from './styles/index.js';
 import utils from './utils.js';
@@ -46,6 +47,7 @@ class BetterUIApi extends EventEmitter {
     const sectionsList = this.UI_TYPES.reduce((acc, cur) => ((acc[cur] = true), acc), {});
     return {
       [this.CUSTOM_CSS]: true,
+      customPageLoader: false,
       sections: sectionsList
     };
   }
@@ -79,6 +81,7 @@ class BetterUIApi extends EventEmitter {
         save: this.#queueUpdate.bind(this)
       });
       
+      this.on("config:change", handleConfig);
       this.#isInit = true;
     } catch (e) {
       this.#catchError(e);
