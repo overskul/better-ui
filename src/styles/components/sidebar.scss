@@ -3,7 +3,7 @@
 // Layout
 $sidebar-width: 85vw;
 $sidebar-apps-width: 16vw;
-$sidebar-container-width: calc(#{$sidebar-width} - #{$sidebar-apps-width});
+$sidebar-container-width: calc(#{$sidebar-width}-#{$sidebar-apps-width});
 
 // App Icons
 $sidebar-app-size: 2.25rem;
@@ -21,8 +21,8 @@ $sidebar-app-border-radius: 0.5rem;
   }
 
   .apps {
-    background-color: var(--secondary-color) !important;
-    color: var(--secondary-text-color) !important;
+    background-color: var(--secondary-color)!important;
+    color: var(--secondary-text-color)!important;
     width: $sidebar-apps-width;
     padding: 1rem 0;
 
@@ -51,10 +51,10 @@ $sidebar-app-border-radius: 0.5rem;
       &.active {
         --active-icon-color: radial-gradient(
           circle,
-          rgba(0, 0, 0, 0) 5%,
-          rgb(from var(--active-color) r g b / 0.25)
-        ) !important;
-        border-color: rgb(from var(--active-color) r g b / 0.5) !important;
+          rgba(0, 0, 0, 0)5%,
+          rgb(from var(--active-color)r g b / 0.25)
+        )!important;
+        border-color: rgb(from var(--active-color)r g b / 0.5)!important;
       }
 
       // NOTE: A temp solution to use active-state on official apps only
@@ -156,17 +156,10 @@ $sidebar-app-border-radius: 0.5rem;
           padding-left: 0.5rem !important;
         }
 
-        /*.title {
-          width: 100%;
-          justify-content: space-between;
-          padding: 0 0.5rem;
-        }*/
-
         .title {
           display: flex !important;
           align-items: center !important;
           margin: 0 !important;
-          // justify-content: space-between !important;
 
           span:first-of-type {
             flex-shrink: 0 !important;
@@ -241,27 +234,104 @@ $sidebar-app-border-radius: 0.5rem;
       }
 
       .search-result {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
         border-top: 1px solid var(--border-color);
-      }
+        box-sizing: border-box;
+        position: relative;
+        padding: 0 0.5rem;
 
-      .filter-message {
-        // border-top: 1px solid var(--border-color);
-        padding: 0.5rem 1rem !important;
+        &.loading {
+          height: auto !important;
 
-        .icon {
-          border: 1px solid var(--border-color);
-          border-radius: 0.5rem;
-          font-size: 1rem;
-          height: 2rem;
-          width: 2rem;
+          &::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            width: 30%;
+            height: 2px;
+            background-color: rgb(0, 0, 0);
+            animation: linear-loader-animation ease 1s infinite;
+            border-radius: 0 !important;
+          }
         }
 
-        strong {
-          color: var(--active-color);
+        .filter-message {
+          box-sizing: border-box;
+          width: calc(100% + 1rem);
+          padding: 0.5rem 1rem !important;
+          margin-left: -0.5rem;
+          margin-right: -0.5rem;
+          align-self: stretch !important;
+
+          .icon {
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            height: 1rem !important;
+            width: 1rem !important;
+            min-width: auto !important;
+          }
+
+          strong {
+            color: var(--active-color);
+          }
+        }
+
+        .filter-message+.tile {
+          margin-top: 0.5rem !important;
+        }
+
+        .tile {
+          display: flex;
+          align-items: center;
+          background-color: var(--secondary-color) !important;
+          padding: 1.5rem 0.5rem !important;
+          margin-bottom: 0.25rem;
+
+          &:hover,
+          &:active {
+            filter: brightness(1.5);
+          }
+
+          .icon {
+            margin-left: auto;
+            flex-shrink: 0;
+
+            &:first-child {
+              margin-left: 0;
+              background-size: 100% !important;
+              border-radius: 1rem;
+            }
+          }
+
+          .text.sub-text {
+            flex-shrink: 1;
+            margin-left: 0.5rem;
+
+            &:hover,
+            &:active {
+              color: var(--active-color) !important;
+            }
+          }
+        }
+
+        & > .tile:not(.tile + .tile) {
+          border-top-left-radius: 1rem;
+          border-top-right-radius: 1rem;
+        }
+
+        & > .tile:not(:has(+ .tile)) {
+          border-bottom-left-radius: 1rem;
+          border-bottom-right-radius: 1rem;
         }
       }
     }
-    
+
     &.notifications {
       .header {
         box-sizing: border-box;
