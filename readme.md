@@ -8,7 +8,7 @@
 Enhance your Acode editor experience with customizable UI styles.
 
 > [!WARNING]
-> Version `1.9.0` comes with breaking changes in api for improvements, please check new [documention here](./documention.md).
+> Version `1.9.0` comes with breaking changes in api for improvements, please check new [documention here](https://github.com/overskul/better-ui/blob/main/documention.md).
 
 ## Features ✨
 
