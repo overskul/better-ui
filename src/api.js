@@ -48,6 +48,7 @@ class BetterUIApi extends EventEmitter {
     return {
       [this.CUSTOM_CSS]: true,
       customPageLoader: false,
+      HideFavoriteSidebarApp: false,
       sections: sectionsList
     };
   }
