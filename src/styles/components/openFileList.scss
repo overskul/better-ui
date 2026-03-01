@@ -1,4 +1,3 @@
-
 [open-file-list-pos="bottom"] {
   #quick-tools {
     border-top-left-radius: 0 !important;
@@ -33,8 +32,59 @@
       background: var(--primary-color) !important;
     }
 
-    .file {
+    &.notice {
+      position: relative;
+      transition: ease 0.3s;
+
+      .text {
+        color: #ffda0c;
+      }
+
+      &::before {
+        content: "" !important;
+        color: #ffda0c;
+        font-size: 0 !important;
+        margin-left: 0 !important;
+        text-shadow: 0px 0px 0 rgba(0, 0, 0, 0.5) !important;
+      }
+    }
+
+    .file, .icon, .icons, .licons {
       padding: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center;
+      height: 100% !important;
+      width: 1.5rem !important;
+    }
+
+    .cancel {
+      opacity: .25;
+      position: relative !important;
+      height: 13px !important;
+      width: 13px !important;
+      border-radius: 2px;
+      margin-right: 4px;
+
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 50%;
+        height: 1px;
+        background: #fff;
+        transform-origin: center;
+      }
+
+      &::before {
+        transform: translate(-50%, -50%) rotate(45deg);
+      }
+
+      &::after {
+        transform: translate(-50%, -50%) rotate(-45deg);
+      }
     }
   }
 }
