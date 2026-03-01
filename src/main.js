@@ -8,7 +8,6 @@ const actionStack = acode.require('actionStack');
 const appSettings = acode.require('settings');
 const Confirm = acode.require('confirm');
 const EditorFile = acode.require('editorFile');
-const fs = acode.require('fs');
 const Url = acode.require('url');
 
 class BetterUIPlugin {
@@ -33,7 +32,7 @@ class BetterUIPlugin {
           promises.push(API.loadUI(key));
         }
       });
-      
+
       if (API.config.customCSS) promises.push(API.loadCustomCSS());
       await Promise.allSettled(promises);
 
@@ -57,7 +56,7 @@ class BetterUIPlugin {
 
       acode.define('@better/ui', undefined);
       acode.define('@better/ui/utils', undefined);
-      
+
       await requestReload();
     } catch (e) {
       console.error('BetterUI destroy failed:', e);
@@ -83,7 +82,7 @@ class BetterUIPlugin {
       ],
       cb: async key => {
         if (key === 'settings') return await createSettingsPage();
-        
+
         if (key === 'raw_settings') {
           const filename = Url.basename(API.CONFIG_FILE);
           const editorFile = new EditorFile(filename, {
@@ -102,7 +101,7 @@ class BetterUIPlugin {
           actionStack.pop(actionStack.length);
           return;
         }
-        
+
         if (key === 'custom_css') {
           const filename = Url.basename(API.CUSTOM_CSS_FILE);
           const editorFile = new EditorFile(filename, {
@@ -137,7 +136,7 @@ if (window.acode) {
   const betterUI = new BetterUIPlugin();
   acode.setPluginInit(
     plugin.id,
-    async (baseUrl, $page, cache) => {
+    async (baseUrl) => {
       try {
         betterUI.baseUrl = baseUrl.endsWith('/') ? baseUrl : baseUrl + '/';
         await betterUI.init();
