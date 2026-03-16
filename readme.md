@@ -4,6 +4,7 @@
 ![License](https://img.shields.io/github/license/overskul/better-ui?color=yellow&style=for-the-badge)
 ![GitHub Stars](https://img.shields.io/github/stars/overskul/better-ui?color=yellow&style=for-the-badge)
 ![Version](https://img.shields.io/github/v/release/overskul/better-ui?color=yellow&style=for-the-badge)
+![Downloads](https://img.shields.io/badge/dynamic/json?color=yellow&label=Downloads&query=downloads&url=https://acode.app/api/plugin/x.better.ui/&style=for-the-badge)
 
 Enhance your Acode editor experience with customizable UI styles.
 
